@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Pesquisar Produtos{% endblock %}
+{% block content %}
+<h1>Pesquisar Produtos</h1>
+<form action="{{ url_for('filtro') }}" method="POST">
+    <input type="text" name="nome" placeholder="Nome do Produto">
+    <input type="number" name="preco_min" placeholder="Preço Mínimo">
+    <input type="number" name="preco_max" placeholder="Preço Máximo">
+    <select name="categoria_id">
+        <option value="">Todas as Categorias</option>
+        {% for cat in categorias %}
+        <option value="{{ cat['id'] }}">{{ cat['nome'] }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<h2>Resultados</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th>Categoria</th>
+    </tr>
+    {% for produto in resultados %}
+    <tr>
+        <td>{{ produto['id'] }}</td>
+        <td>{{ produto['nome'] }}</td>
+        <td>{{ produto['descricao'] }}</td>
+        <td>{{ produto['preco'] }}</td>
+        <td>{{ produto['categoria'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

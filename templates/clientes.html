@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Clientes{% endblock %}
+{% block content %}
+<h1>Clientes</h1>
+
+<!-- Lista de Clientes -->
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Endereços</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente['nome'] }}</td>
+            <td>{{ cliente['email'] }}</td>
+            <td>{{ cliente['telefone'] }}</td>
+            <td>
+                <ul>
+                    {% for endereco in cliente['enderecos'] %}
+                    <li>
+                        {{ endereco['tipo'] }} - {{ endereco['logradouro'] }}, {{ endereco['numero'] }}
+                        {{ endereco['bairro'] }} - {{ endereco['cidade'] }} - {{ endereco['estado'] }}
+                        - {{ endereco['cep'] }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Formulários de Adicionar Cliente e Endereço -->
+<h2>Adicionar Cliente</h2>
+<form action="{{ url_for('add_cliente') }}" method="POST">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="telefone" placeholder="Telefone" required>
+    <button type="submit">Adicionar Cliente</button>
+</form>
+
+<h2>Adicionar Endereço</h2>
+<form action="{{ url_for('add_endereco') }}" method="POST">
+    <select name="cliente_id" required>
+        <option value="" disabled selected>Selecione um Cliente</option>
+        {% for cliente in clientes %}
+        <option value="{{ cliente['id'] }}">{{ cliente['email'] }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="tipo" placeholder="Tipo (ex: Residencial)" required>
+    <input type="text" name="logradouro" placeholder="Logradouro" required>
+    <input type="text" name="numero" placeholder="Número" required>
+    <input type="text" name="complemento" placeholder="Complemento">
+    <input type="text" name="bairro" placeholder="Bairro" required>
+    <input type="text" name="cidade" placeholder="Cidade" required>
+    <input type="text" name="estado" placeholder="Estado" required>
+    <input type="text" name="cep" placeholder="CEP" required>
+    <button type="submit">Adicionar Endereço</button>
+</form>
+{% endblock %}

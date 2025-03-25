@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - E-commerce</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao E-commerce</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('clientes') }}">Clientes</a>
+            <a href="{{ url_for('produtos') }}">Produtos</a>
+            <a href="{{ url_for('view_cart') }}">Carrinho</a>
+        </nav>
+        
+    </header>
+
+    <main>
+        <h2>Produtos em Destaque</h2>
+        <div class="product-grid">
+            {% for produto in produtos %}
+            <div class="product-card">
+                <img src="{{ produto['imagem'] }}" alt="{{ produto['nome'] }}">
+                <h3>{{ produto['nome'] }}</h3>
+                <p>{{ produto['descricao'] }}</p>
+                <p><strong>R$ {{ "%.2f"|format(produto['preco']) }}</strong></p>
+                <form action="{{ url_for('add_to_cart', product_id=produto['id']) }}" method="POST">
+                    <button type="submit">Comprar</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

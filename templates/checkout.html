@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<h2>Finalizar Compra</h2>
+<form action="{{ url_for('checkout') }}" method="POST">
+    <!-- Seleção de Cliente -->
+    <label for="cliente_id">Cliente:</label>
+    <select name="cliente_id" required>
+        {% for cliente in clientes %}
+        <option value="{{ cliente['id'] }}">{{ cliente['nome'] }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Seleção de Endereço -->
+    <label for="endereco_id">Endereço:</label>
+    <select name="endereco_id" id="endereco_select" required>
+        <option value="" disabled selected>Escolha um endereço...</option>
+        {% for endereco in enderecos %}
+        <option value="{{ endereco['id'] }}">{{ endereco['endereco'] }}</option>
+        {% endfor %}
+    </select>
+    <button type="button" onclick="toggleNewAddress()">Cadastrar Novo Endereço</button>
+
+    <!-- Formulário de Novo Endereço -->
+    <div id="new_address" style="display: none;">
+        <h3>Cadastrar Endereço</h3>
+        <input type="text" name="tipo" placeholder="Tipo (ex: Residencial)" required>
+        <input type="text" name="logradouro" placeholder="Logradouro" required>
+        <input type="text" name="numero" placeholder="Número" required>
+        <input type="text" name="complemento" placeholder="Complemento">
+        <input type="text" name="bairro" placeholder="Bairro" required>
+        <input type="text" name="cidade" placeholder="Cidade" required>
+        <input type="text" name="estado" placeholder="Estado" required>
+        <input type="text" name="cep" placeholder="CEP" required>
+    </div>
+
+    <!-- Seleção de Forma de Pagamento -->
+    <label for="forma_pagamento_id">Forma de Pagamento:</label>
+    <select name="forma_pagamento_id" required>
+        {% for forma in formas_pagamento %}
+        <option value="{{ forma['id'] }}">{{ forma['tipo'] }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Botão de Envio -->
+    <button type="submit">Finalizar Compra</button>
+</form>
+
+<script>
+    function toggleNewAddress() {
+        const newAddress = document.getElementById('new_address');
+        const enderecoSelect = document.getElementById('endereco_select');
+
+        if (newAddress.style.display === 'none') {
+            newAddress.style.display = 'block';
+            enderecoSelect.disabled = true;
+        } else {
+            newAddress.style.display = 'none';
+            enderecoSelect.disabled = false;
+        }
+    }
+</script>
+{% endblock %}
